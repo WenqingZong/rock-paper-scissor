@@ -1,3 +1,6 @@
 service : {
-    "greet": (text) -> (text);
+    "greet": (text) -> (text) query;
+    "get_random_float": () -> (float32);
+    "get_random_choice": () -> (nat8);
+
 }
