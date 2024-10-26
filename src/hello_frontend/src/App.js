@@ -30,7 +30,7 @@ class App {
   choice = '';
   robot_choice = '';
   options = ['rock', 'paper', 'scissors'];
-
+  listenersAdded = false;
 
   constructor() {
     this.#render();
@@ -50,6 +50,8 @@ class App {
   };
 
   #addEventListeners() {
+	if (this.listenersAdded) return;
+
     document.getElementById("rock").addEventListener('click', () => this.#handleImageClick('rock'));
     document.getElementById("paper").addEventListener('click', () => this.#handleImageClick('paper'));
     document.getElementById("scissor").addEventListener('click', () => this.#handleImageClick('scissor'));
@@ -59,6 +61,8 @@ class App {
       img.addEventListener('mouseover', (e) => e.target.style.border = '2px solid green');
       img.addEventListener('mouseout', (e) => e.target.style.border = '2px solid transparent');
     }
+
+	this.listenersAdded = true;
   }
 
   #render() {
