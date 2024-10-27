@@ -37,16 +37,24 @@ class App {
   }
 
   #handleImageClick = async (imageName) => {
-	const userOptionIndex = this.options.indexOf(imageName);
-	
-	// Get the robot's choice
-	this.robot_choice = await hello_backend.get_random_choice();
-	let robot_move = this.options[this.robot_choice];
-	console.log("robot choice: ", robot_move);
-	
-	this.choice = determineWinner(userOptionIndex, this.robot_choice);
-	
-	this.#render();
+    const userOptionIndex = this.options.indexOf(imageName);
+
+    this.robotMessage = 'Robot is making a decision...';
+    this.robot_choice = ''; // Clear the robot's choice temporarily
+    this.choice = ''; // Clear the choice to prevent showing the result immediately
+    this.#render(); // Render the message
+
+    // Get the robot's choice
+    this.robot_choice = await hello_backend.get_random_choice();
+    let robot_move = this.options[this.robot_choice];
+    console.log("robot choice: ", robot_move);
+
+    // Determine the winner and set the result
+    this.choice = determineWinner(userOptionIndex, this.robot_choice);
+    
+    // Clear the decision message and update the robot image section
+    this.robotMessage = '';
+    this.#render();
   };
 
   #addEventListeners() {
@@ -67,11 +75,15 @@ class App {
 
   #render() {
 	const robotImage = this.robot_choice !== '' ? html`
-            <div class="robot-answer">
-                <h2>Robot has chosen: ${this.options[this.robot_choice]}</h2>
-                <img src="${this.robot_choice === 0 ? rockImg : this.robot_choice === 1 ? paperImg : scissorImg}" alt="${this.options[this.robot_choice]}" class="option-img" />
-            </div>
-        ` : '';
+        <div class="robot-answer">
+            <h2>Robot has chosen: ${this.options[this.robot_choice]}</h2>
+            <img src="${this.robot_choice === 0 ? rockImg : this.robot_choice === 1 ? paperImg : scissorImg}" alt="${this.options[this.robot_choice]}" class="option-img" />
+        </div>
+      ` : html`
+        <div class="robot-answer">
+            <h2>${this.robotMessage}</h2>
+        </div>
+      `;
 
 	let resultClass = '';
 	if (this.choice.includes('Win')) {

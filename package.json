@@ -14,5 +14,8 @@
   "type": "module",
   "workspaces": [
     "src/hello_frontend"
-  ]
+  ],
+  "dependencies": {
+    "chart.js": "^4.4.5"
+  }
 }
